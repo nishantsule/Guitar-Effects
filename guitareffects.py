@@ -102,12 +102,9 @@ class GEcore():
         return output_signal
     
     def distortion(self, input_signal, pflag):
-        alph = float(input('Enter the gain (~10): '))
-#         output_signal = np.zeros(len(input_signal))
-#         for n in range(len(input_signal)):
+        alph = -1 * float(input('Enter the gain (> 1): '))
         q = np.sign(input_signal)
         output_signal = q * (1 - np.exp(alph * q * input_signal))
-#         output_signal = input_signal - input_signal * np.exp(-alph * input_signal**2)
         output_signal = self.norm_signal(output_signal)
         self.plot_signal([input_signal, output_signal], pflag)
         return output_signal
