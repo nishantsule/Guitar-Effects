@@ -82,7 +82,7 @@ class GEcore():
         return output_signal
     
     def overdrive(self, input_signal, pflag):
-        th = float(input('Enter the threshold (number between 0 and 1): '))
+        th = float(input('Enter the threshold (< 0.5): '))
         output_signal = np.zeros(len(input_signal))
         for n in range(len(input_signal)):
             if np.absolute(input_signal[n]) < th:
