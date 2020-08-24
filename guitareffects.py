@@ -33,8 +33,7 @@ class GEcore():
             channels.append(songdata[chn::audiofile.channels])  # separate signal from channels
         self.signal = np.sum(channels, axis=0) / len(channels)  # Averaging signal over all channels
         self.signal = self.norm_signal(self.signal)  # normalize signal amplitude
-        p_audiofile = self.plot_signal([self.signal], True)
-        show(p_audiofile)
+        self.plot_signal([self.signal], True)
         
     def norm_signal(self, input_signal):
         output_signal = input_signal / np.max(np.absolute(input_signal))
