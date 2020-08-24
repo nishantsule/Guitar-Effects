@@ -105,7 +105,7 @@ class GEcore():
         show(p_overdrive)
         return output_signal
     
-        def distortion(self, input_signal, pflag):
+    def distortion(self, input_signal, pflag):
         alph = float(input('Enter the gain (~10): '))
         output_signal = input_signal - input_signal * np.exp(alph * input_signal**2)
         output_signal = self.norm_signal(output_signal)
