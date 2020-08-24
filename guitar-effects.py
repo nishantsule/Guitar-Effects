@@ -1,12 +1,9 @@
 import numpy as np
 from bokeh.plotting import figure, show
-from bokeh.io import output_notebook
+# from bokeh.io import output_notebook
 from bokeh.palettes import Colorblind
 import pydub
-from pydub.playback import play
-import IPython.display as ipd
 import os
-output_notebook()
 
 # This class defines the core Guitar Effects object. 
 # It contains functions to read and write audio files.
