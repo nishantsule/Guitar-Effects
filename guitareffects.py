@@ -33,7 +33,7 @@ class GEcore():
             channels.append(songdata[chn::audiofile.channels])  # separate signal from channels
         self.signal = np.sum(channels, axis=0) / len(channels)  # Averaging signal over all channels
         self.signal = self.norm_signal(self.signal)  # normalize signal amplitude
-        p_audiofile = self.plot_signal([self.signal])
+        p_audiofile = self.plot_signal([self.signal], True)
         show(p_audiofile)
         
     def norm_signal(self, input_signal):
@@ -54,7 +54,7 @@ class GEcore():
         else:
             return(None)
     
-    def delay(self, input_signal):
+    def delay(self, input_signal, pflag):
         delaytime = int(input('Enter the delay you want to add (> 50ms and < 5000ms): '))
         gain = float(input('Enter the gain (number betweeen 0 and 1): '))
         num = int(delaytime * 1e-3 * self.framerate)
@@ -62,11 +62,11 @@ class GEcore():
         delaysig[:num] = 0
         output_signal = input_signal + gain * delaysig
         output_signal = self.norm_signal(output_signal)
-        p_delay = self.plot_signal([input_signal, output_signal], True)
+        p_delay = self.plot_signal([input_signal, output_signal], pflag)
         show(p_delay)
         return output_signal
     
-    def flanger(self, input_signal):
+    def flanger(self, input_signal, pflag):
         maxdelay = int(input('Enter the maximum delay you want to add (< 15ms): '))
         fflanger = float(input('Enter the frequency of delay oscillation (~ 1Hz): '))
         gain = float(input('Enter the gain (number betweeen 0 and 1): '))
@@ -80,11 +80,11 @@ class GEcore():
             else:
                 output_signal[n] = input_signal[n] 
         output_signal = self.norm_signal(output_signal)
-        p_flanger = self.plot_signal([input_signal, output_signal], True)
+        p_flanger = self.plot_signal([input_signal, output_signal], pflag)
         show(p_flanger)
         return output_signal
     
-    def overdrive(self, input_signal):
+    def overdrive(self, input_signal, pflag):
         th = float(input('Enter the threshold (number between 0 and 1): '))
         output_signal = np.zeros(len(input_signal))
         for n in range(len(input_signal)):
@@ -101,11 +101,11 @@ class GEcore():
                 if input_signal[n] < 0:
                     output_signal[n] = -1
         output_signal = self.norm_signal(output_signal)
-        p_overdrive = self.plot_signal([input_signal, output_signal], True)
+        p_overdrive = self.plot_signal([input_signal, output_signal], pflag)
         show(p_overdrive)
         return output_signal
     
-    def tremolo(self, input_signal):
+    def tremolo(self, input_signal, pflag):
         alph = float((input('Enter the amplitude for the modulation (number between 0 and 1): ')))
         modfreq = float(input('Enter modulation frequency (< 20Hz): '))
         output_signal = np.zeros(len(input_signal))
@@ -113,11 +113,11 @@ class GEcore():
             trem = 1 + alph * np.sin(2 * np.pi * modfreq * n / self.framerate)
             output_signal[n] = trem * input_signal[n]
         output_signal = self.norm_signal(output_signal)
-        p_tremolo = self.plot_signal([input_signal, output_signal], True)
+        p_tremolo = self.plot_signal([input_signal, output_signal], pflag)
         show(p_tremolo)
         return output_signal
     
-    def wahwah(self, input_signal):
+    def wahwah(self, input_signal, pflag):
         damp = float(input('Enter the damping factor (number between 0 and 1): '))
         minf = float(input('Enter minimum center cutoff frequency (~ 500Hz): '))
         maxf = float(input('Enter the maximum center cutoff frequency (~ 5000Hz): '))
@@ -140,14 +140,14 @@ class GEcore():
             outl[n] = f1 * output_signal[n] + outl[n-1]
             f1 = 2 * np.sin(np.pi * centerf[n] / self.framerate)
         output_signal = self.norm_signal(output_signal)
-        p_wahwah = self.plot_signal([input_signal, output_signal], True)
+        p_wahwah = self.plot_signal([input_signal, output_signal], pflag)
         show(p_wahwah)
         return output_signal
     
-    def octaveup(self, input_signal):
+    def octaveup(self, input_signal, pflag):
         gain = float(input('Enter gain of octave (number between 0 and 1): '))
         output_signal = input_signal + gain * np.absolute(input_signal)
         output_signal = self.norm_signal(output_signal)
-        p_octaveup = self.plot_signal([input_signal, output_signal], True)
+        p_octaveup = self.plot_signal([input_signal, output_signal], pflag)
         show(p_octaveup)
         return output_signal
