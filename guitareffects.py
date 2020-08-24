@@ -110,7 +110,7 @@ class GEcore():
         return output_signal
     
     def tremolo(self, input_signal, pflag):
-        alph = float((input('Enter the amplitude for the modulation (number between 0 and 1): ')))
+        alph = float((input('Enter the depth of modulation (number between 0 and 1): ')))
         modfreq = float(input('Enter modulation frequency (< 20Hz): '))
         output_signal = np.zeros(len(input_signal))
         for n in range(len(input_signal)):
@@ -121,7 +121,7 @@ class GEcore():
         return output_signal
     
     def wahwah(self, input_signal, pflag):
-        damp = float(input('Enter the damping factor (number between 0 and 1): '))
+        damp = float(input('Enter the damping factor (< 0.5): '))
         minf = float(input('Enter minimum center cutoff frequency (~ 500Hz): '))
         maxf = float(input('Enter the maximum center cutoff frequency (~ 5000Hz): '))
         wahf = float(input('Enter the "wah" frequency (~ 2000Hz): '))
@@ -147,7 +147,7 @@ class GEcore():
         return output_signal
     
     def octaveup(self, input_signal, pflag):
-        gain = float(input('Enter gain of octave (number between 0 and 1): '))
+        gain = float(input('Enter gain of octave-up signal (number between 0 and 1): '))
         output_signal = input_signal + gain * np.absolute(input_signal)
         output_signal = self.norm_signal(output_signal)
         self.plot_signal([input_signal, output_signal], pflag)
