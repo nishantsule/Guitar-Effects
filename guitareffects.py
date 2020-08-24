@@ -19,7 +19,9 @@ class GEcore():
         self.read_audiofile()
         
     def read_audiofile(self):
+        print('----------------------')
         name = input('Enter the audio filename you want to read including the extension: ')
+        print('----------------------')
         filename, file_ext = os.path.splitext(name)
         filename = os.getcwd() + '/audiofiles/' + name
         self.audiofilename = filename
@@ -54,8 +56,10 @@ class GEcore():
             pass
     
     def delay(self, input_signal, pflag):
-        delaytime = int(input('Enter the delay you want to add (> 50ms and < 5000ms): '))
-        gain = float(input('Enter the gain (number betweeen 0 and 1): '))
+        print('----------------------')
+        delaytime = int(input('Enter the delay (> 50ms and < 5000ms): '))
+        gain = float(input('Enter the delay gain (number betweeen 0 and 1): '))
+        print('----------------------')
         num = int(delaytime * 1e-3 * self.framerate)
         delaysig = np.roll(input_signal, num)
         delaysig[:num] = 0
@@ -65,9 +69,11 @@ class GEcore():
         return output_signal
     
     def flanger(self, input_signal, pflag):
-        maxdelay = int(input('Enter the maximum delay you want to add (< 15ms): '))
+        print('----------------------')
+        maxdelay = int(input('Enter the maximum flanger delay (< 15ms): '))
         fflanger = float(input('Enter the frequency of delay oscillation (~ 1Hz): '))
         gain = float(input('Enter the gain (number betweeen 0 and 1): '))
+        print('----------------------')
         num = int(maxdelay * 1e-3 * self.framerate)
         output_signal = np.zeros(len(input_signal))
         delaysig = np.zeros(num)
@@ -82,7 +88,9 @@ class GEcore():
         return output_signal
     
     def overdrive(self, input_signal, pflag):
-        th = float(input('Enter the threshold (< 0.5): '))
+        print('----------------------')
+        th = float(input('Enter the overdrive signal threshold (< 0.5): '))
+        print('----------------------')
         output_signal = np.zeros(len(input_signal))
         for n in range(len(input_signal)):
             if np.absolute(input_signal[n]) < th:
@@ -102,7 +110,9 @@ class GEcore():
         return output_signal
     
     def distortion(self, input_signal, pflag):
-        alph = -1 * float(input('Enter the gain (> 1): '))
+        print('----------------------')
+        alph = -1 * float(input('Enter the distortion gain (> 1): '))
+        print('----------------------')
         q = np.sign(input_signal)
         output_signal = q * (1 - np.exp(alph * q * input_signal))
         output_signal = self.norm_signal(output_signal)
@@ -110,8 +120,10 @@ class GEcore():
         return output_signal
     
     def tremolo(self, input_signal, pflag):
-        alph = float((input('Enter the depth of modulation (number between 0 and 1): ')))
+        print('----------------------')
+        alph = float((input('Enter the depth of tremble (number between 0 and 1): ')))
         modfreq = float(input('Enter modulation frequency (< 20Hz): '))
+        print('----------------------')
         output_signal = np.zeros(len(input_signal))
         for n in range(len(input_signal)):
             trem = 1 + alph * np.sin(2 * np.pi * modfreq * n / self.framerate)
@@ -121,10 +133,12 @@ class GEcore():
         return output_signal
     
     def wahwah(self, input_signal, pflag):
-        damp = float(input('Enter the damping factor (< 0.5): '))
+        print('----------------------')
+        damp = float(input('Enter the wahwah damping factor (< 0.5): '))
         minf = float(input('Enter minimum center cutoff frequency (~ 500Hz): '))
         maxf = float(input('Enter the maximum center cutoff frequency (~ 5000Hz): '))
         wahf = float(input('Enter the "wah" frequency (~ 2000Hz): '))
+        print('----------------------')
         output_signal = np.zeros(len(input_signal))
         outh = np.zeros(len(input_signal))
         outl = np.zeros(len(input_signal))
@@ -147,7 +161,9 @@ class GEcore():
         return output_signal
     
     def octaveup(self, input_signal, pflag):
+        print('----------------------')
         gain = float(input('Enter gain of octave-up signal (number between 0 and 1): '))
+        print('----------------------')
         output_signal = input_signal + gain * np.absolute(input_signal)
         output_signal = self.norm_signal(output_signal)
         self.plot_signal([input_signal, output_signal], pflag)
