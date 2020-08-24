@@ -40,16 +40,19 @@ class GEcore():
         output_signal = input_signal / np.max(np.absolute(input_signal))
         return output_signal
         
-    def plot_signal(self, audio_signal):
-        p = figure(plot_width=900, plot_height=500, title='Audio Signal', 
-                   x_axis_label='Time (s)', y_axis_label='Amplitude (arb. units)')
-        time = np.linspace(0, np.shape(audio_signal)[1] / self.framerate, np.shape(audio_signal)[1])
-        m = int(np.shape(audio_signal)[1] / 2000)
-        for n in range(np.shape(audio_signal)[0]):
-            labels = 'signal ' + str(n + 1)
-            p.line(time[0::m], audio_signal[n][0::m], line_color=Colorblind[8][n], 
-                   alpha=0.6, legend_label=labels)
-        return(p)
+    def plot_signal(self, audio_signal, pflag):
+        if pflag:
+            p = figure(plot_width=900, plot_height=500, title='Audio Signal', 
+                       x_axis_label='Time (s)', y_axis_label='Amplitude (arb. units)')
+            time = np.linspace(0, np.shape(audio_signal)[1] / self.framerate, np.shape(audio_signal)[1])
+            m = int(np.shape(audio_signal)[1] / 2000)
+            for n in range(np.shape(audio_signal)[0]):
+                labels = 'signal ' + str(n + 1)
+                p.line(time[0::m], audio_signal[n][0::m], line_color=Colorblind[8][n], 
+                       alpha=0.6, legend_label=labels)
+            return(p)
+        else:
+            return(None)
     
     def delay(self, input_signal):
         delaytime = int(input('Enter the delay you want to add (> 50ms and < 5000ms): '))
@@ -59,7 +62,7 @@ class GEcore():
         delaysig[:num] = 0
         output_signal = input_signal + gain * delaysig
         output_signal = self.norm_signal(output_signal)
-        p_delay = self.plot_signal([input_signal, output_signal])
+        p_delay = self.plot_signal([input_signal, output_signal], True)
         show(p_delay)
         return output_signal
     
@@ -77,7 +80,7 @@ class GEcore():
             else:
                 output_signal[n] = input_signal[n] 
         output_signal = self.norm_signal(output_signal)
-        p_flanger = self.plot_signal([input_signal, output_signal])
+        p_flanger = self.plot_signal([input_signal, output_signal], True)
         show(p_flanger)
         return output_signal
     
@@ -98,7 +101,7 @@ class GEcore():
                 if input_signal[n] < 0:
                     output_signal[n] = -1
         output_signal = self.norm_signal(output_signal)
-        p_overdrive = self.plot_signal([input_signal, output_signal])
+        p_overdrive = self.plot_signal([input_signal, output_signal], True)
         show(p_overdrive)
         return output_signal
     
@@ -110,7 +113,7 @@ class GEcore():
             trem = 1 + alph * np.sin(2 * np.pi * modfreq * n / self.framerate)
             output_signal[n] = trem * input_signal[n]
         output_signal = self.norm_signal(output_signal)
-        p_tremolo = self.plot_signal([input_signal, output_signal])
+        p_tremolo = self.plot_signal([input_signal, output_signal], True)
         show(p_tremolo)
         return output_signal
     
@@ -137,7 +140,7 @@ class GEcore():
             outl[n] = f1 * output_signal[n] + outl[n-1]
             f1 = 2 * np.sin(np.pi * centerf[n] / self.framerate)
         output_signal = self.norm_signal(output_signal)
-        p_wahwah = self.plot_signal([input_signal, output_signal])
+        p_wahwah = self.plot_signal([input_signal, output_signal], True)
         show(p_wahwah)
         return output_signal
     
@@ -145,6 +148,6 @@ class GEcore():
         gain = float(input('Enter gain of octave (number between 0 and 1): '))
         output_signal = input_signal + gain * np.absolute(input_signal)
         output_signal = self.norm_signal(output_signal)
-        p_octaveup = self.plot_signal([input_signal, output_signal])
+        p_octaveup = self.plot_signal([input_signal, output_signal], True)
         show(p_octaveup)
         return output_signal
