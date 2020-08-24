@@ -105,6 +105,14 @@ class GEcore():
         show(p_overdrive)
         return output_signal
     
+        def distortion(self, input_signal, pflag):
+        alph = float(input('Enter the gain (~10): '))
+        output_signal = input_signal - input_signal * np.exp(alph * input_signal**2)
+        output_signal = self.norm_signal(output_signal)
+        p_distortion = self.plot_signal([input_signal, output_signal], pflag)
+        show(p_distortion)
+        return output_signal
+    
     def tremolo(self, input_signal, pflag):
         alph = float((input('Enter the amplitude for the modulation (number between 0 and 1): ')))
         modfreq = float(input('Enter modulation frequency (< 20Hz): '))
